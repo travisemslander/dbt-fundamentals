@@ -1,0 +1,34 @@
+version: 2
+
+models:
+  - name: stg_payments
+    description: Processed payments for orders
+    columns:
+      - name: payment_id
+        description: Primary id of stg_payments, identifier of payment
+      - name: order_id
+        description: ID of order from stg_orders
+        tests:
+          - relationships:
+              to: ref('stg_orders')
+              field: order_id
+      - name: payment_method
+        description: '{{ doc("payment_method") }}'
+        tests:
+          - accepted_values:
+                values:
+                  - credit_card
+                  - bank_transfer
+                  - coupon
+                  - gift_card
+      - name: status
+        description: '{{ doc("payment_status") }}'
+        tests:
+          - accepted_values:
+                values:
+                  - success
+                  - fail
+      - name: amount
+        description: Amount of payment in dollars
+      - name: created_at
+        description: When payment initiated
